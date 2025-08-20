@@ -1,13 +1,22 @@
 import React, { useCallback, useMemo } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
+import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import type { SlotInfo } from 'react-big-calendar';
-import moment from 'moment';
-import 'moment/dist/locale/ja';
+import { format, getDay, parse, startOfWeek } from 'date-fns';
+import { ja } from 'date-fns/locale';
 import { useCalendar } from '../hooks/useCalendar';
 import type { CalendarEvent } from '../mocks/data';
 
-moment.locale('ja');
-const localizer = momentLocalizer(moment);
+const locales = {
+  'ja': ja,
+};
+
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek: (date) => startOfWeek(date, { locale: ja }),
+  getDay,
+  locales,
+});
 
 const messages = {
   allDay: '終日',
@@ -25,14 +34,14 @@ const messages = {
 };
 
 const formats = {
-    monthHeaderFormat: 'YYYY年M月',
-    dayRangeHeaderFormat: ({ start, end }: {start: Date, end: Date}, _: any, local: any) =>
-        `${local.format(start, 'M月D日')} – ${local.format(end, 'M月D日')}`,
-    dayHeaderFormat: 'M月D日(ddd)',
-    weekdayFormat: (date: Date, _: any, local: any) => local.format(date, 'ddd'),
-    agendaHeaderFormat: ({ start, end }: {start: Date, end: Date}, _: any, local: any) =>
-        `${local.format(start, 'M月D日')} – ${local.format(end, 'M月D日')}`,
-    agendaDateFormat: (date: Date, _: any, local: any) => local.format(date, 'M月D日(ddd)'),
+    monthHeaderFormat: 'yyyy年M月',
+    dayRangeHeaderFormat: ({ start, end }: {start: Date, end: Date}) =>
+        `${format(start, 'M月d日')} – ${format(end, 'M月d日')}`,
+    dayHeaderFormat: 'M月d日(EEE)',
+    weekdayFormat: (date: Date) => format(date, 'EEE', { locale: ja }),
+    agendaHeaderFormat: ({ start, end }: {start: Date, end: Date}) =>
+        `${format(start, 'M月d日')} – ${format(end, 'M月d日')}`,
+    agendaDateFormat: (date: Date) => format(date, 'M月d日(EEE)', { locale: ja }),
 };
 
 const userColors = [
