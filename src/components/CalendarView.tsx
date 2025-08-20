@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import type { SlotInfo } from 'react-big-calendar';
 import moment from 'moment';
-import 'moment/locale/ja';
+import 'moment/dist/locale/ja';
 import { useCalendar } from '../hooks/useCalendar';
 import type { CalendarEvent } from '../mocks/data';
 
