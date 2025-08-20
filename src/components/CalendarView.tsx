@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo } from 'react';
-import { Calendar, momentLocalizer, SlotInfo } from 'react-big-calendar';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import type { SlotInfo } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/ja';
 import { useCalendar } from '../hooks/useCalendar';
-import { CalendarEvent } from '../mocks/data';
+import type { CalendarEvent } from '../mocks/data';
 
 moment.locale('ja');
 const localizer = momentLocalizer(moment);
@@ -25,13 +26,13 @@ const messages = {
 
 const formats = {
     monthHeaderFormat: 'YYYY年M月',
-    dayRangeHeaderFormat: ({ start, end }: {start: Date, end: Date}, culture: any, local: any) =>
+    dayRangeHeaderFormat: ({ start, end }: {start: Date, end: Date}, _: any, local: any) =>
         `${local.format(start, 'M月D日')} – ${local.format(end, 'M月D日')}`,
     dayHeaderFormat: 'M月D日(ddd)',
-    weekdayFormat: (date, culture, local) => local.format(date, 'ddd'),
-    agendaHeaderFormat: ({ start, end }: {start: Date, end: Date}, culture: any, local: any) =>
+    weekdayFormat: (date: Date, _: any, local: any) => local.format(date, 'ddd'),
+    agendaHeaderFormat: ({ start, end }: {start: Date, end: Date}, _: any, local: any) =>
         `${local.format(start, 'M月D日')} – ${local.format(end, 'M月D日')}`,
-    agendaDateFormat: (date: Date, culture: any, local: any) => local.format(date, 'M月D日(ddd)'),
+    agendaDateFormat: (date: Date, _: any, local: any) => local.format(date, 'M月D日(ddd)'),
 };
 
 const userColors = [

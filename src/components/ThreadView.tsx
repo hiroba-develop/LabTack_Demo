@@ -1,7 +1,8 @@
 import React from 'react';
-import { Message, mockUsers } from '../mocks/data';
+import type { Message } from '../mocks/data';
+import { mockUsers } from '../mocks/data';
 import Avatar from './Avatar';
-import { MessageSquare, Send } from 'lucide-react';
+import { Send } from 'lucide-react';
 
 interface ThreadViewProps {
   parentMessage: Message;

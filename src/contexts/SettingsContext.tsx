@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState } from 'react';
+import type { ReactNode } from 'react';
 
 export interface SettingsContextType {
   drivePath: string;

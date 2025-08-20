@@ -1,6 +1,7 @@
 import React from 'react';
 import { useCalendar } from '../hooks/useCalendar';
-import { CalendarEvent, mockUsers } from '../mocks/data';
+import { mockUsers } from '../mocks/data';
+import type { CalendarEvent } from '../mocks/data';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import TodoList from './TodoList';

@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { DMContext, DMContextType } from '../contexts/DMContext';
+import { DMContext } from '../contexts/DMContext';
+import type { DMContextType } from '../contexts/DMContext';
 
 export const useDM = (): DMContextType => {
   const context = useContext(DMContext);

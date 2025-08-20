@@ -1,5 +1,7 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { Conversation, mockConversations, Notification, mockNotifications, NotificationStatus } from '../mocks/data';
+import React, { createContext, useState } from 'react';
+import type { ReactNode } from 'react';
+import { mockConversations, mockNotifications } from '../mocks/data';
+import type { Conversation, Notification, NotificationStatus } from '../mocks/data';
 
 export interface DMContextType {
   conversations: Conversation[];

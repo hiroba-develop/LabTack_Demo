@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { useCalendar } from '../hooks/useCalendar';
 import { mockUsers } from '../mocks/data';
-import { EditingEvent } from './CalendarContext';
+import type { EditingEvent } from '../contexts/CalendarContext';
 import { format } from 'date-fns';
 
 const customStyles: Modal.Styles = {
@@ -61,7 +61,7 @@ const EventEditorModal: React.FC = () => {
         if (!formData) return;
         const currentParticipants = formData.participantIds || [];
         const newParticipants = currentParticipants.includes(userId)
-            ? currentParticipants.filter(id => id !== userId)
+            ? currentParticipants.filter((id: string) => id !== userId)
             : [...currentParticipants, userId];
         setFormData({ ...formData, participantIds: newParticipants });
     };

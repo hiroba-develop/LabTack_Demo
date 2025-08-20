@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Bot, MessageSquare, Paperclip, Maximize, X } from 'lucide-react';
-import { FileItem } from '../mocks/data';
+import type { FileItem } from '../mocks/data';
 import Modal from 'react-modal';
 
 const fullscreenModalStyles: Modal.Styles = {

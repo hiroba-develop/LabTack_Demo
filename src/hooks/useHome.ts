@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { HomeContext, HomeContextType } from '../contexts/HomeContext';
+import { HomeContext } from '../contexts/HomeContext';
+import type { HomeContextType } from '../contexts/HomeContext';
 
 export const useHome = (): HomeContextType => {
   const context = useContext(HomeContext);

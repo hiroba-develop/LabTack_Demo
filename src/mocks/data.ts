@@ -1,4 +1,4 @@
-import { components } from "../types/api";
+import type { components } from "../types/api";
 
 type Channel = components["schemas"]["Channel"];
 type OriginalMessage = components["schemas"]["Message"];
@@ -420,6 +420,8 @@ export const mockNotifications: Notification[] = [
             title: '緊急ミーティング',
             start: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 18, 0, 0),
             end: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 19, 0, 0),
+            ownerId: 'user-2',
+            participantIds: ['user-0', 'user-2']
         },
         createdAt: new Date(),
     },
@@ -433,6 +435,8 @@ export const mockNotifications: Notification[] = [
             title: '輪読会の打ち合わせ',
             start: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2, 11, 0, 0),
             end: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2, 12, 0, 0),
+            ownerId: 'user-3',
+            participantIds: ['user-0', 'user-3']
         },
         createdAt: new Date(new Date().setDate(now.getDate() - 1)),
     }

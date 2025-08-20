@@ -1,5 +1,6 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { components } from '../types/api';
+import React, { createContext, useState } from 'react';
+import type { ReactNode } from 'react';
+import type { components } from '../types/api';
 import { mockUsers } from '../mocks/data';
 
 type User = components['schemas']['User'] & { statusMessage?: string; onlineStatus?: 'online' | 'offline' };

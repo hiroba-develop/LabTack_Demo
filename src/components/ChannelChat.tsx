@@ -1,7 +1,8 @@
 import React from 'react';
 import Avatar from './Avatar';
 import { useHome } from '../hooks/useHome';
-import { mockMessages, mockUsers, Message, mockFiles } from '../mocks/data';
+import { mockMessages, mockUsers, mockFiles } from '../mocks/data';
+import type { Message } from '../mocks/data';
 import { Send, MessageSquare } from 'lucide-react';
 import { useDetailPanel } from '../hooks/useDetailPanel';
 import HomeFileDetailPanel from './HomeFileDetailPanel';

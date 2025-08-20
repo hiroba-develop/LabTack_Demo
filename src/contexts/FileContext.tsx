@@ -1,5 +1,7 @@
-import React, { createContext, useState, useContext, ReactNode, useMemo } from 'react';
-import { FileItem, mockFiles } from '../mocks/data';
+import React, { createContext, useState, useMemo } from 'react';
+import type { ReactNode } from 'react';
+import { mockFiles } from '../mocks/data';
+import type { FileItem } from '../mocks/data';
 
 export interface FileContextType {
   files: FileItem[];

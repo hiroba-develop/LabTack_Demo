@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHome } from '../hooks/useHome';
 import { ChevronDown, Hash, PlusCircle } from 'lucide-react';
-import { components } from '../types/api';
+import type { components } from '../types/api';
 import AddChannelModal from './AddChannelModal';
 
 type Channel = components['schemas']['Channel'];
@@ -47,7 +47,7 @@ const ChannelItem: React.FC<{ channel: Channel; isSubItem?: boolean }> = ({ chan
                         {channel.children?.map(child => <ChannelItem key={child.id} channel={child} isSubItem={true} />)}
                     </div>
                 )}
-                <AddChannelModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} parentId={channel.id} />
+                <AddChannelModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} parentId={channel.id ?? null} />
             </div>
         )
     }

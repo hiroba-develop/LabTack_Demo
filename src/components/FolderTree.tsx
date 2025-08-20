@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useFiles } from '../hooks/useFiles';
-import { ChevronDown, Folder, File } from 'lucide-react';
-import { components } from '../types/api';
+import { ChevronDown, Folder } from 'lucide-react';
+import type { components } from '../types/api';
 
 type FileItem = components['schemas']['File'];
 

@@ -1,6 +1,8 @@
-import React, { createContext, useState, useContext, ReactNode, useMemo } from 'react';
-import { View } from 'react-big-calendar';
-import { CalendarEvent, mockCalendarEvents, Todo, mockTodos, mockUsers } from '../mocks/data';
+import React, { createContext, useState, useMemo } from 'react';
+import type { ReactNode } from 'react';
+import type { View } from 'react-big-calendar';
+import { mockCalendarEvents, mockTodos } from '../mocks/data';
+import type { CalendarEvent, Todo } from '../mocks/data';
 
 export type EditingEvent = Omit<CalendarEvent, 'id' | 'ownerId'> & { id?: string, ownerId?: string };
 

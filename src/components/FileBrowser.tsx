@@ -6,7 +6,7 @@ import DocumentViewer from './DocumentViewer';
 import TextViewer from './TextViewer'; // 追加
 import { Folder, File, ChevronRight, Bot } from 'lucide-react';
 import { format } from 'date-fns';
-import { FileItem } from '../mocks/data';
+import type { FileItem } from '../mocks/data';
 import dummyTxtUrl from '/dummy.txt?url';
 import dummyCsvUrl from '/dummy.csv?url';
 

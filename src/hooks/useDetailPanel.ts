@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { DetailPanelContext, DetailPanelContextType } from '../contexts/DetailPanelContext';
+import { DetailPanelContext } from '../contexts/DetailPanelContext';
+import type { DetailPanelContextType } from '../contexts/DetailPanelContext';
 
 export const useDetailPanel = (): DetailPanelContextType => {
   const context = useContext(DetailPanelContext);

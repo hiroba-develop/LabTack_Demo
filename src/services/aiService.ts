@@ -1,6 +1,6 @@
 // A mock function to simulate calling an AI summarization API.
 
-export const getAISummary = (fileName: string, fileContent?: string): Promise<string> => {
+export const getAISummary = (fileName: string): Promise<string> => {
     console.log(`Requesting summary for: ${fileName}`);
     
     // Simulate network delay

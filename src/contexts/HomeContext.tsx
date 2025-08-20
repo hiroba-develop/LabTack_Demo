@@ -1,6 +1,8 @@
-import React, { createContext, useState, useContext, ReactNode, useCallback } from 'react';
-import { components } from '../types/api';
-import { mockChannels, mockMessages, Message } from '../mocks/data';
+import React, { createContext, useState, useCallback } from 'react';
+import type { ReactNode } from 'react';
+import type { components } from '../types/api';
+import { mockChannels, mockMessages } from '../mocks/data';
+import type { Message } from '../mocks/data';
 
 type Channel = components['schemas']['Channel'];
 
