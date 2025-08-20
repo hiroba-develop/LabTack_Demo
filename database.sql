@@ -1,0 +1,155 @@
+-- LabTack Database Schema for Oracle DB
+
+-- 1. Tablespace Creation
+-- It is recommended to create a dedicated tablespace for the application data.
+-- The DBA should execute this part.
+/*
+CREATE TABLESPACE LABTACK_DATA
+DATAFILE 'labstack_data01.dbf'
+SIZE 1G
+AUTOEXTEND ON NEXT 512M MAXSIZE 10G;
+
+CREATE TEMPORARY TABLESPACE LABTACK_TEMP
+TEMPFILE 'labstack_temp01.dbf'
+SIZE 512M
+AUTOEXTEND ON NEXT 256M MAXSIZE 4G;
+
+-- Create application user and grant permissions
+CREATE USER labtack_app IDENTIFIED BY "your_strong_password"
+DEFAULT TABLESPACE LABTACK_DATA
+TEMPORARY TABLESPACE LABTACK_TEMP;
+
+GRANT CONNECT, RESOURCE TO labtack_app;
+GRANT CREATE VIEW, CREATE SYNONYM TO labtack_app;
+ALTER USER labtack_app QUOTA UNLIMITED ON LABTACK_DATA;
+*/
+
+-- Assuming the user 'labtack_app' is connected.
+
+-- 2. Tables Creation
+
+-- USERS Table: Stores user information
+CREATE TABLE USERS (
+    ID VARCHAR2(255) NOT NULL,
+    GOOGLE_ID VARCHAR2(255) NOT NULL UNIQUE,
+    NAME NVARCHAR2(100) NOT NULL,
+    EMAIL VARCHAR2(255) NOT NULL UNIQUE,
+    AVATAR_URL VARCHAR2(1024),
+    ROLE VARCHAR2(20) DEFAULT 'general' NOT NULL,
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    UPDATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT PK_USERS PRIMARY KEY (ID),
+    CONSTRAINT CHK_USERS_ROLE CHECK (ROLE IN ('admin', 'general'))
+);
+
+COMMENT ON TABLE USERS IS 'Stores user information, including Google SSO details and application role.';
+COMMENT ON COLUMN USERS.ID IS 'Primary key, unique identifier for the user.';
+COMMENT ON COLUMN USERS.GOOGLE_ID IS 'User''s unique Google ID.';
+COMMENT ON COLUMN USERS.NAME IS 'User''s display name.';
+COMMENT ON COLUMN USERS.EMAIL IS 'User''s email address.';
+COMMENT ON COLUMN USERS.AVATAR_URL IS 'URL for the user''s profile picture.';
+COMMENT ON COLUMN USERS.ROLE IS 'User role within the application (e.g., admin, general).';
+COMMENT ON COLUMN USERS.CREATED_AT IS 'Timestamp of user creation.';
+COMMENT ON COLUMN USERS.UPDATED_AT IS 'Timestamp of last user update.';
+
+-- CHANNELS Table: Represents channels and directories in the Home feature
+CREATE TABLE CHANNELS (
+    ID VARCHAR2(255) NOT NULL,
+    NAME NVARCHAR2(100) NOT NULL,
+    TYPE VARCHAR2(20) NOT NULL,
+    PARENT_ID VARCHAR2(255),
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT PK_CHANNELS PRIMARY KEY (ID),
+    CONSTRAINT FK_CHANNELS_PARENT FOREIGN KEY (PARENT_ID) REFERENCES CHANNELS(ID) ON DELETE CASCADE,
+    CONSTRAINT CHK_CHANNELS_TYPE CHECK (TYPE IN ('directory', 'file_link'))
+);
+
+COMMENT ON TABLE CHANNELS IS 'Represents channels and directories in the Home feature. Supports a hierarchical structure.';
+COMMENT ON COLUMN CHANNELS.ID IS 'Primary key, unique identifier for the channel.';
+COMMENT ON COLUMN CHANNELS.NAME IS 'Name of the channel or directory.';
+COMMENT ON COLUMN CHANNELS.TYPE IS 'Type of the channel item (directory or file_link).';
+COMMENT ON COLUMN CHANNELS.PARENT_ID IS 'Foreign key to self-referencing parent channel, for hierarchy.';
+COMMENT ON COLUMN CHANNELS.CREATED_AT IS 'Timestamp of channel creation.';
+
+-- MESSAGES Table: Stores chat messages for each channel
+CREATE TABLE MESSAGES (
+    ID VARCHAR2(255) NOT NULL,
+    CHANNEL_ID VARCHAR2(255) NOT NULL,
+    USER_ID VARCHAR2(255) NOT NULL,
+    CONTENT NCLOB NOT NULL,
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT PK_MESSAGES PRIMARY KEY (ID),
+    CONSTRAINT FK_MESSAGES_CHANNEL FOREIGN KEY (CHANNEL_ID) REFERENCES CHANNELS(ID) ON DELETE CASCADE,
+    CONSTRAINT FK_MESSAGES_USER FOREIGN KEY (USER_ID) REFERENCES USERS(ID) ON DELETE CASCADE
+);
+
+COMMENT ON TABLE MESSAGES IS 'Stores all chat messages within channels.';
+COMMENT ON COLUMN MESSAGES.ID IS 'Primary key, unique identifier for the message.';
+COMMENT ON COLUMN MESSAGES.CHANNEL_ID IS 'Foreign key referencing the channel where the message was posted.';
+COMMENT ON COLUMN MESSAGES.USER_ID IS 'Foreign key referencing the user who posted the message.';
+COMMENT ON COLUMN MESSAGES.CONTENT IS 'The text content of the message.';
+COMMENT ON COLUMN MESSAGES.CREATED_AT IS 'Timestamp of message creation.';
+
+
+-- FILES Table: Manages file and folder metadata
+CREATE TABLE FILES (
+    ID VARCHAR2(255) NOT NULL,
+    NAME NVARCHAR2(255) NOT NULL,
+    TYPE VARCHAR2(20) NOT NULL,
+    PARENT_ID VARCHAR2(255),
+    OWNER_ID VARCHAR2(255) NOT NULL,
+    STORAGE_PATH VARCHAR2(4000) NOT NULL, -- Path in the actual file storage (e.g., S3 key)
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    UPDATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT PK_FILES PRIMARY KEY (ID),
+    CONSTRAINT FK_FILES_PARENT FOREIGN KEY (PARENT_ID) REFERENCES FILES(ID) ON DELETE CASCADE,
+    CONSTRAINT FK_FILES_OWNER FOREIGN KEY (OWNER_ID) REFERENCES USERS(ID),
+    CONSTRAINT CHK_FILES_TYPE CHECK (TYPE IN ('folder', 'file'))
+);
+
+COMMENT ON TABLE FILES IS 'Stores metadata for all files and folders in the file management system.';
+COMMENT ON COLUMN FILES.ID IS 'Primary key, unique identifier for the file/folder.';
+COMMENT ON COLUMN FILES.NAME IS 'Name of the file or folder.';
+COMMENT ON COLUMN FILES.TYPE IS 'Type of the item (folder or file).';
+COMMENT ON COLUMN FILES.PARENT_ID IS 'Foreign key to self-referencing parent folder, for hierarchy.';
+COMMENT ON COLUMN FILES.OWNER_ID IS 'Foreign key referencing the user who owns the file.';
+COMMENT ON COLUMN FILES.STORAGE_PATH IS 'Internal path or key to the file in the backend storage system.';
+COMMENT ON COLUMN FILES.CREATED_AT IS 'Timestamp of file/folder creation.';
+COMMENT ON COLUMN FILES.UPDATED_AT IS 'Timestamp of last file/folder update.';
+
+-- 3. Indexes Creation
+
+-- Indexes for USERS table
+CREATE INDEX IDX_USERS_EMAIL ON USERS(EMAIL);
+CREATE INDEX IDX_USERS_GOOGLE_ID ON USERS(GOOGLE_ID);
+
+-- Indexes for CHANNELS table
+CREATE INDEX IDX_CHANNELS_PARENT_ID ON CHANNELS(PARENT_ID);
+
+-- Indexes for MESSAGES table
+CREATE INDEX IDX_MESSAGES_CHANNEL_ID ON MESSAGES(CHANNEL_ID);
+CREATE INDEX IDX_MESSAGES_USER_ID ON MESSAGES(USER_ID);
+
+-- Indexes for FILES table
+CREATE INDEX IDX_FILES_PARENT_ID ON FILES(PARENT_ID);
+CREATE INDEX IDX_FILES_OWNER_ID ON FILES(OWNER_ID);
+
+
+-- Trigger to update UPDATED_AT columns
+CREATE OR REPLACE TRIGGER TRG_USERS_UPDATE
+BEFORE UPDATE ON USERS
+FOR EACH ROW
+BEGIN
+    :NEW.UPDATED_AT := CURRENT_TIMESTAMP;
+END;
+/
+
+CREATE OR REPLACE TRIGGER TRG_FILES_UPDATE
+BEFORE UPDATE ON FILES
+FOR EACH ROW
+BEGIN
+    :NEW.UPDATED_AT := CURRENT_TIMESTAMP;
+END;
+/
+
+COMMIT;
