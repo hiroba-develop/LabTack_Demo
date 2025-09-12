@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, MessageSquare, FileText, Calendar, Settings, User } from 'lucide-react';
+import { Home, MessageSquare, FileText, Settings, User } from 'lucide-react';
 import logo from '/labtack_logo.png';
 import { NavLink } from 'react-router-dom';
 import { useDetailPanel } from '../hooks/useDetailPanel';
@@ -30,9 +30,6 @@ const Layout: React.FC<LayoutProps> = ({ children, sidebarContent, headerTitle }
             </NavLink>
             <NavLink to="/files" className={({ isActive }) => `p-3 rounded-lg ${isActive ? 'bg-accent text-white' : 'hover:bg-opacity-80'}`} title="ファイル">
               <FileText size={24} />
-            </NavLink>
-            <NavLink to="/calendar" className={({ isActive }) => `p-3 rounded-lg ${isActive ? 'bg-accent text-white' : 'hover:bg-opacity-80'}`} title="カレンダー">
-              <Calendar size={24} />
             </NavLink>
              <NavLink to="/settings" className={({ isActive }) => `p-3 rounded-lg ${isActive ? 'bg-accent text-white' : 'hover:bg-opacity-80'}`} title="設定">
               <Settings size={24} />

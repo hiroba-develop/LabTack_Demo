@@ -28,7 +28,6 @@ export const DMProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const updateNotificationStatus = (id: string, status: NotificationStatus) => {
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, status } : n));
-    // TODO: Link with calendar events
   }
 
   const handleSetSelectedConversationId = (id: string | null) => {

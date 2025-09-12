@@ -31,29 +31,10 @@ export interface Notification {
     type: 'event_invitation';
     fromUserId: string;
     status: NotificationStatus;
-    event: CalendarEvent;
+    event: any;
     createdAt: Date;
 }
 
-// --- Calendar機能用の型定義 ---
-export interface CalendarEvent {
-    id: string;
-    title: string;
-    start: Date;
-    end: Date;
-    allDay?: boolean;
-    ownerId: string;
-    participantIds: string[];
-    description?: string;
-    resource?: any;
-}
-
-export interface Todo {
-    id: string;
-    text: string;
-    completed: boolean;
-    dueDate?: Date;
-}
 
 
 
@@ -343,72 +324,8 @@ export const mockDirectMessages: Record<string, Message[]> = {
     ]
 };
 
-// --- Calendar Mock Data ---
-const now = new Date();
-export const mockCalendarEvents: CalendarEvent[] = [
-    {
-        id: 'event-1',
-        title: '全体ゼミ',
-        start: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0),
-        end: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0),
-        ownerId: 'user-1',
-        participantIds: ['user-0', 'user-1', 'user-2', 'user-3'],
-    },
-    {
-        id: 'event-2',
-        title: 'プロジェクトA 定例MTG',
-        start: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 14, 0, 0),
-        end: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 15, 0, 0),
-        ownerId: 'user-0',
-        participantIds: ['user-0', 'user-3'],
-    },
-    {
-        id: 'event-3',
-        title: '論文提出締切',
-        start: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2),
-        end: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2),
-        allDay: true,
-        ownerId: 'user-0',
-        participantIds: ['user-0'],
-    },
-     {
-        id: 'event-4',
-        title: '鈴木さんと面談',
-        start: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 16, 0, 0),
-        end: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, 16, 30, 0),
-        ownerId: 'user-0',
-        participantIds: ['user-0', 'user-2'],
-    },
-];
-
-// --- TODO Mock Data ---
-export const mockTodos: Todo[] = [
-    {
-        id: 'todo-1',
-        text: '論文の先行研究レビューを完了させる',
-        completed: false,
-        dueDate: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 3),
-    },
-    {
-        id: 'todo-2',
-        text: '実験プロトコルのドラフト作成',
-        completed: false,
-        dueDate: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 5),
-    },
-    {
-        id: 'todo-3',
-        text: '佐藤さんと進捗ミーティング',
-        completed: true,
-        dueDate: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1),
-    },
-    {
-        id: 'todo-4',
-        text: '学会の参加登録',
-        completed: false,
-    }
-];
-
 // --- Notification Mock Data ---
+const now = new Date();
 export const mockNotifications: Notification[] = [
     {
         id: 'notif-1',
