@@ -4,7 +4,7 @@ import { useDetailPanel } from '../hooks/useDetailPanel';
 import FileDetailPanel from './FileDetailPanel';
 import DocumentViewer from './DocumentViewer';
 import TextViewer from './TextViewer'; // 追加
-import { Folder, File, ChevronRight, Bot } from 'lucide-react';
+import { Folder, File, ChevronRight } from 'lucide-react';
 import { format } from 'date-fns';
 import type { FileItem } from '../mocks/data';
 import dummyTxtUrl from '/dummy.txt?url';
@@ -63,10 +63,6 @@ const FileBrowser: React.FC = () => {
         }
     };
 
-    const handleSummarizeClick = (e: React.MouseEvent, item: FileItem) => {
-        e.stopPropagation(); // Prevent row click from firing
-        handleItemClick(item);
-    };
 
     const closeViewers = () => {
         setDocViewerOpen(false);
@@ -75,59 +71,52 @@ const FileBrowser: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col h-full p-4">
-            {/* Breadcrumbs */}
-            <div className="flex items-center text-sm text-gray-500 mb-4 flex-shrink-0">
-                {currentPath.map((folder, index) => (
-                    <React.Fragment key={folder.id}>
-                        <span 
-                            className="hover:underline cursor-pointer"
-                            onClick={() => setCurrentFolderId(folder.id ?? null)}
-                        >
-                            {folder.name}
-                        </span>
-                        {index < currentPath.length - 1 && <ChevronRight size={16} className="mx-1" />}
-                    </React.Fragment>
-                ))}
+        <div className="flex flex-col h-full">
+            {/* Header with breadcrumbs */}
+            <div className="p-4 border-b border-border bg-white">
+                <div className="flex items-center text-sm text-gray-500 mb-2">
+                    {currentPath.map((folder, index) => (
+                        <React.Fragment key={folder.id}>
+                            <span 
+                                className="hover:underline cursor-pointer"
+                                onClick={() => setCurrentFolderId(folder.id ?? null)}
+                            >
+                                {folder.name}
+                            </span>
+                            {index < currentPath.length - 1 && <ChevronRight size={16} className="mx-1" />}
+                        </React.Fragment>
+                    ))}
+                </div>
+                <h2 className="text-lg font-semibold text-primary">ファイル一覧</h2>
             </div>
 
             {/* File List Header */}
-            <div className="grid grid-cols-12 gap-4 text-sm font-bold text-gray-600 border-b pb-2 mb-2 flex-shrink-0">
-                <div className="col-span-5">名前</div>
-                <div className="col-span-3">最終更新日</div>
-                <div className="col-span-2">所有者</div>
-                <div className="col-span-2 text-right">アクション</div>
+            <div className="px-4 py-2 bg-gray-50 border-b border-border">
+                <div className="grid grid-cols-10 gap-4 text-sm font-bold text-gray-600">
+                    <div className="col-span-5">名前</div>
+                    <div className="col-span-3">最終更新日</div>
+                    <div className="col-span-2">所有者</div>
+                </div>
             </div>
 
             {/* File List */}
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto p-4">
             {currentFolderContents.map(item => (
                 <div 
                     key={item.id} 
-                    className={`grid grid-cols-12 gap-4 items-center p-2 rounded-lg cursor-pointer ${selectedFileId === item.id ? 'bg-blue-100' : 'hover:bg-sub1'}`}
+                    className={`grid grid-cols-10 gap-4 items-center p-3 rounded-lg cursor-pointer border mb-2 ${selectedFileId === item.id ? 'bg-blue-50 border-blue-200' : 'bg-white border-gray-200 hover:bg-gray-50'}`}
                     onClick={() => handleItemClick(item)}
                     onDoubleClick={() => handleItemDoubleClick(item)}
                 >
                     <div className="col-span-5 flex items-center">
                         {item.type === 'folder' ? <Folder size={20} className="mr-3 text-accent" /> : <File size={20} className="mr-3 text-gray-500" />}
-                        <span className="truncate">{item.name}</span>
+                        <span className="truncate font-medium">{item.name}</span>
                     </div>
                     <div className="col-span-3 text-sm text-gray-600">
                         {format(new Date(item.updatedAt || ''), 'yyyy/MM/dd HH:mm')}
                     </div>
                     <div className="col-span-2 text-sm text-gray-600 truncate">
                         {item.ownerId} {/* TODO: Replace with actual user name */}
-                    </div>
-                    <div className="col-span-2 flex justify-end">
-                        {item.type === 'file' && (
-                             <button 
-                                onClick={(e) => handleSummarizeClick(e, item)}
-                                className="flex items-center text-sm px-2 py-1 bg-accent text-white rounded-md hover:bg-opacity-80"
-                            >
-                                <Bot size={16} className="mr-1" />
-                                AI要約
-                            </button>
-                        )}
                     </div>
                 </div>
             ))}

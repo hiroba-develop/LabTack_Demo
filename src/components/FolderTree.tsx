@@ -25,14 +25,14 @@ const FolderNode: React.FC<{ folder: FileItem, allFiles: FileItem[] }> = ({ fold
     return (
         <div>
             <div 
-                className={`flex items-center p-2 text-sm rounded-md cursor-pointer ${isSelected ? 'bg-blue-100' : 'hover:bg-sub1'}`}
+                className={`flex items-center p-2 text-sm rounded-md cursor-pointer transition-colors ${isSelected ? 'bg-blue-100 text-blue-800' : 'hover:bg-gray-100'}`}
                 onClick={handleSelect}
             >
                 <div onClick={toggleExpand} className="mr-1 p-1 hover:bg-gray-200 rounded">
                     <ChevronDown size={16} className={`transition-transform ${isExpanded ? 'rotate-0' : '-rotate-90'}`} />
                 </div>
                 <Folder size={16} className="mr-2 text-accent" />
-                <span className={isSelected ? 'font-bold' : ''}>{folder.name}</span>
+                <span className={`truncate ${isSelected ? 'font-semibold' : ''}`}>{folder.name}</span>
             </div>
             {isExpanded && (
                 <div className="pl-6 border-l-2 border-gray-200 ml-3">
@@ -49,7 +49,7 @@ const FolderTree: React.FC = () => {
   const rootFolders = files.filter(file => file.parentId === null && file.type === 'folder');
 
   return (
-    <div className="p-2">
+    <div className="p-4">
         {rootFolders.map(folder => <FolderNode key={folder.id} folder={folder} allFiles={files} />)}
     </div>
   );
