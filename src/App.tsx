@@ -6,6 +6,7 @@ import Files from "./pages/Files";
 import DM from "./pages/DM";
 import Settings from "./pages/Settings";
 import Research from "./pages/Research";
+import Members from "./pages/Members";
 import { useEffect } from "react";
 import { HomeProvider } from "./contexts/HomeContext";
 import { FileProvider } from "./contexts/FileContext";
@@ -71,6 +72,14 @@ function App() {
                       element={
                         <Layout sidebarContent={<></>} headerTitle="設定">
                           <Settings />
+                        </Layout>
+                      }
+                    />
+                    <Route
+                      path="/members"
+                      element={
+                        <Layout sidebarContent={<HomeSidebar />} headerTitle="メンバー">
+                          <Members />
                         </Layout>
                       }
                     />
