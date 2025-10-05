@@ -7,7 +7,7 @@ export interface Message extends OriginalMessage {
 }
 type OriginalUser = components["schemas"]["User"];
 export interface User extends OriginalUser {
-    status?: 'online' | 'offline';
+    status?: 'online' | 'offline' | 'away' | 'busy';
 }
 
 // FileItemを拡張してurlプロパティを追加
@@ -49,19 +49,19 @@ export const mockUsers: Record<string, User> = {
     id: "user-1",
     name: "佐藤 健",
     avatarUrl: "https://randomuser.me/api/portraits/men/1.jpg",
-    status: 'online',
+    status: 'away',
   },
   "user-2": {
     id: "user-2",
     name: "鈴木 一郎",
     avatarUrl: "https://randomuser.me/api/portraits/men/2.jpg",
-    status: 'offline',
+    status: 'busy',
   },
   "user-3": {
     id: "user-3",
     name: "高橋 花子",
     avatarUrl: "https://randomuser.me/api/portraits/women/3.jpg",
-    status: 'online',
+    status: 'offline',
   },
 };
 

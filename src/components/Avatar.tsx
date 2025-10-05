@@ -1,6 +1,6 @@
 import React from 'react';
 
-type UserStatus = 'online' | 'offline';
+type UserStatus = 'online' | 'offline' | 'away' | 'busy';
 
 interface AvatarProps {
   avatarUrl?: string;
@@ -13,7 +13,23 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl, name, status, size = 40 }) =
   const badgeSize = size / 3.5;
   const badgePosition = size / 14;
 
-  const statusColor = status === 'online' ? 'bg-green-500' : 'bg-gray-400';
+  const getStatusColor = (status?: UserStatus) => {
+    switch (status) {
+      case 'online': return 'bg-green-500';
+      case 'away': return 'bg-yellow-500';
+      case 'busy': return 'bg-red-500';
+      default: return 'bg-gray-400';
+    }
+  };
+
+  const getStatusTitle = (status?: UserStatus) => {
+    switch (status) {
+      case 'online': return 'オンライン';
+      case 'away': return '離席中';
+      case 'busy': return '取り込み中';
+      default: return 'オフライン';
+    }
+  };
 
   return (
     <div className="relative inline-block flex-shrink-0">
@@ -25,14 +41,14 @@ const Avatar: React.FC<AvatarProps> = ({ avatarUrl, name, status, size = 40 }) =
       />
       {status && (
         <span
-          className={`absolute bottom-0 right-0 block rounded-full ring-2 ring-white ${statusColor}`}
+          className={`absolute bottom-0 right-0 block rounded-full ring-2 ring-white ${getStatusColor(status)}`}
           style={{
             width: `${badgeSize}px`,
             height: `${badgeSize}px`,
             right: `${badgePosition}px`,
             bottom: `${badgePosition}px`,
           }}
-          title={status === 'online' ? '在籍中' : '退室中'}
+          title={getStatusTitle(status)}
         />
       )}
     </div>

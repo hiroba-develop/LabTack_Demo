@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, MessageSquare, FileText, Settings, User } from 'lucide-react';
+import { Home, MessageSquare, FileText, Settings, User, FlaskConical } from 'lucide-react';
 import logo from '/labtack_logo.png';
 import { NavLink } from 'react-router-dom';
 import { useDetailPanel } from '../hooks/useDetailPanel';
@@ -11,7 +11,11 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, sidebarContent, headerTitle }) => {
-  const { panelContent } = useDetailPanel();
+  const { panelContent, closePanel } = useDetailPanel();
+
+  const handleNavigation = () => {
+    closePanel();
+  };
 
   return (
     <div className="flex h-screen bg-sub1">
@@ -22,16 +26,19 @@ const Layout: React.FC<LayoutProps> = ({ children, sidebarContent, headerTitle }
             <img src={logo} alt="LabTack Logo" className="w-14 h-14 rounded-lg" />
           </div>
           <nav className="flex flex-col items-center space-y-2">
-            <NavLink to="/" className={({ isActive }) => `p-3 rounded-lg ${isActive ? 'bg-accent text-white' : 'hover:bg-opacity-80'}`} title="ホーム">
+            <NavLink to="/" onClick={handleNavigation} className={({ isActive }) => `p-3 rounded-lg ${isActive ? 'bg-accent text-white' : 'hover:bg-opacity-80'}`} title="ホーム">
               <Home size={24} />
             </NavLink>
-            <NavLink to="/dm" className={({ isActive }) => `p-3 rounded-lg ${isActive ? 'bg-accent text-white' : 'hover:bg-opacity-80'}`} title="DM">
+            <NavLink to="/dm" onClick={handleNavigation} className={({ isActive }) => `p-3 rounded-lg ${isActive ? 'bg-accent text-white' : 'hover:bg-opacity-80'}`} title="DM">
               <MessageSquare size={24} />
             </NavLink>
-            <NavLink to="/files" className={({ isActive }) => `p-3 rounded-lg ${isActive ? 'bg-accent text-white' : 'hover:bg-opacity-80'}`} title="ファイル">
+            <NavLink to="/files" onClick={handleNavigation} className={({ isActive }) => `p-3 rounded-lg ${isActive ? 'bg-accent text-white' : 'hover:bg-opacity-80'}`} title="ファイル">
               <FileText size={24} />
             </NavLink>
-             <NavLink to="/settings" className={({ isActive }) => `p-3 rounded-lg ${isActive ? 'bg-accent text-white' : 'hover:bg-opacity-80'}`} title="設定">
+            <NavLink to="/research" onClick={handleNavigation} className={({ isActive }) => `p-3 rounded-lg ${isActive ? 'bg-accent text-white' : 'hover:bg-opacity-80'}`} title="研究">
+              <FlaskConical size={24} />
+            </NavLink>
+            <NavLink to="/settings" onClick={handleNavigation} className={({ isActive }) => `p-3 rounded-lg ${isActive ? 'bg-accent text-white' : 'hover:bg-opacity-80'}`} title="設定">
               <Settings size={24} />
             </NavLink>
           </nav>
@@ -43,9 +50,11 @@ const Layout: React.FC<LayoutProps> = ({ children, sidebarContent, headerTitle }
 
       {/* B: 項目一覧 */}
       <div className="w-72 bg-gray-50 border-r border-border flex flex-col flex-shrink-0">
-        <div className="p-4 h-16 flex items-center border-b border-border flex-shrink-0">
-          <h1 className="text-xl font-bold text-primary">{headerTitle}</h1>
-        </div>
+        {headerTitle && (
+          <div className="p-4 h-16 flex items-center border-b border-border flex-shrink-0">
+            <h1 className="text-xl font-bold text-primary">{headerTitle}</h1>
+          </div>
+        )}
         <div className="flex-1 overflow-y-auto">
           {sidebarContent}
         </div>

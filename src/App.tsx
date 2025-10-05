@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Files from "./pages/Files";
 import DM from "./pages/DM";
 import Settings from "./pages/Settings";
+import Research from "./pages/Research";
 import { useEffect } from "react";
 import { HomeProvider } from "./contexts/HomeContext";
 import { FileProvider } from "./contexts/FileContext";
@@ -12,9 +13,9 @@ import { DMProvider } from "./contexts/DMContext";
 import { DetailPanelProvider } from "./contexts/DetailPanelContext";
 import { SettingsProvider } from "./contexts/SettingsContext";
 import { UserProvider } from "./contexts/UserContext";
-import ChannelList from "./components/ChannelList";
 import FolderTree from "./components/FolderTree";
 import DMSidebar from "./components/DMSidebar";
+import HomeSidebar from "./components/HomeSidebar";
 
 function App() {
   const basename = import.meta.env.BASE_URL;
@@ -36,7 +37,7 @@ function App() {
                     <Route
                       path="/"
                       element={
-                        <Layout sidebarContent={<ChannelList />} headerTitle="ホーム">
+                        <Layout sidebarContent={<HomeSidebar />} headerTitle="">
                           <Dashboard />
                         </Layout>
                       }
@@ -54,6 +55,14 @@ function App() {
                       element={
                         <Layout sidebarContent={<DMSidebar />} headerTitle="DM">
                           <DM />
+                        </Layout>
+                      }
+                    />
+                    <Route
+                      path="/research"
+                      element={
+                        <Layout sidebarContent={<></>} headerTitle="研究">
+                          <Research />
                         </Layout>
                       }
                     />

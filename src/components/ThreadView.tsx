@@ -2,7 +2,8 @@ import React from 'react';
 import type { Message } from '../mocks/data';
 import { mockUsers } from '../mocks/data';
 import Avatar from './Avatar';
-import { Send } from 'lucide-react';
+import { Send, X } from 'lucide-react';
+import { useDetailPanel } from '../hooks/useDetailPanel';
 
 interface ThreadViewProps {
   parentMessage: Message;
@@ -11,12 +12,22 @@ interface ThreadViewProps {
 
 const ThreadView: React.FC<ThreadViewProps> = ({ parentMessage, replies }) => {
     const parentUser = mockUsers[parentMessage.userId || ''];
+    const { closePanel } = useDetailPanel();
 
     return (
         <div className="h-full flex flex-col">
-            <div className="p-4 border-b">
-                <h3 className="font-bold text-lg">スレッド</h3>
-                <p className="text-sm text-gray-500">#{parentMessage.channelId} での会話</p>
+            <div className="p-4 border-b flex justify-between items-center">
+                <div>
+                    <h3 className="font-bold text-lg">スレッド</h3>
+                    <p className="text-sm text-gray-500">#{parentMessage.channelId} での会話</p>
+                </div>
+                <button
+                    onClick={closePanel}
+                    className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                    aria-label="スレッドを閉じる"
+                >
+                    <X size={20} className="text-gray-500 hover:text-gray-700" />
+                </button>
             </div>
             <div className="flex-1 p-4 overflow-y-auto">
                 {/* Parent Message */}
