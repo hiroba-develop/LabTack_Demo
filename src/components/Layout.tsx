@@ -1,7 +1,7 @@
 import React from 'react';
 import { Home, MessageSquare, FileText, Settings, User, FlaskConical } from 'lucide-react';
 import logo from '/labtack_logo.png';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useDetailPanel } from '../hooks/useDetailPanel';
 
 interface LayoutProps {
@@ -12,10 +12,14 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, sidebarContent, headerTitle }) => {
   const { panelContent, closePanel } = useDetailPanel();
+  const location = useLocation();
 
   const handleNavigation = () => {
     closePanel();
   };
+
+  // ホームページとして扱うパス
+  const isHomePage = location.pathname === '/' || location.pathname === '/members';
 
   return (
     <div className="flex h-screen bg-sub1">
@@ -26,7 +30,7 @@ const Layout: React.FC<LayoutProps> = ({ children, sidebarContent, headerTitle }
             <img src={logo} alt="LabTack Logo" className="w-14 h-14 rounded-lg" />
           </div>
           <nav className="flex flex-col items-center space-y-2">
-            <NavLink to="/" onClick={handleNavigation} className={({ isActive }) => `p-3 rounded-lg ${isActive ? 'bg-accent text-white' : 'hover:bg-opacity-80'}`} title="ホーム">
+            <NavLink to="/" onClick={handleNavigation} className={() => `p-3 rounded-lg ${isHomePage ? 'bg-accent text-white' : 'hover:bg-opacity-80'}`} title="ホーム">
               <Home size={24} />
             </NavLink>
             <NavLink to="/dm" onClick={handleNavigation} className={({ isActive }) => `p-3 rounded-lg ${isActive ? 'bg-accent text-white' : 'hover:bg-opacity-80'}`} title="DM">

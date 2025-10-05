@@ -78,7 +78,7 @@ function App() {
                     <Route
                       path="/members"
                       element={
-                        <Layout sidebarContent={<HomeSidebar />} headerTitle="メンバー">
+                        <Layout sidebarContent={<HomeSidebar />} headerTitle="">
                           <Members />
                         </Layout>
                       }

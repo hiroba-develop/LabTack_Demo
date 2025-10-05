@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHome } from '../hooks/useHome';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ChevronDown, Hash, PlusCircle } from 'lucide-react';
 import type { components } from '../types/api';
 import AddChannelModal from './AddChannelModal';
@@ -8,6 +9,8 @@ type Channel = components['schemas']['Channel'];
 
 const ChannelItem: React.FC<{ channel: Channel; isSubItem?: boolean }> = ({ channel, isSubItem = false }) => {
     const { selectedChannelId, setSelectedChannelId } = useHome();
+    const navigate = useNavigate();
+    const location = useLocation();
     const [isExpanded, setIsExpanded] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -16,6 +19,10 @@ const ChannelItem: React.FC<{ channel: Channel; isSubItem?: boolean }> = ({ chan
     const handleSelect = () => {
         if(channel.type !== 'directory') {
             setSelectedChannelId(channel.id ?? null);
+            // メンバーページにいる場合はホーム画面に戻る
+            if(location.pathname === '/members') {
+                navigate('/');
+            }
         }
     };
 
